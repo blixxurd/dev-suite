@@ -1,0 +1,20 @@
+#!/bin/sh
+# The commit gate: a commit goes through only if the project's fast checks pass.
+# Switched on once per clone by `make setup`. Fix what it flags; never skip it.
+
+# The checks read the files on disk, so those have to be what this commit holds.
+# Asked before git's variables are cleared: GIT_INDEX_FILE names the index of this
+# commit, which for `git commit -a` or `git commit <file>` is not the usual one.
+left=$(git diff --name-only; git ls-files --others --exclude-standard)
+if [ -n "$left" ]; then
+  echo 'pre-commit: refused. The checks run on the files on disk, and these are not what this commit holds:' >&2
+  printf '%s\n' "$left" | sed 's/^/  /' >&2
+  echo 'Add them to the commit, ignore them, or set them aside first: git stash push --include-untracked -- <files>' >&2
+  exit 1
+fi
+
+# Git hands a hook its own variables, GIT_INDEX_FILE among them. They are cleared so
+# the checks run exactly as they do by hand, and so a test that makes a repo of its own
+# is not pointed at this one.
+unset $(git rev-parse --local-env-vars)
+exec make check

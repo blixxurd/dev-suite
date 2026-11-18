@@ -1,0 +1,10 @@
+{
+  "name": "dev",
+  "version": "0.1.0",
+  "description": "Plans, builds and ships new software projects the way a good developer builds them: a gameplan and one approval, then a walking skeleton, proven commits, an independent review and a written report.",
+  "author": { "name": "blixxurd" },
+  "homepage": "https://github.com/blixxurd/dev-suite",
+  "repository": "https://github.com/blixxurd/dev-suite",
+  "license": "MIT",
+  "keywords": ["planning", "scaffolding", "tdd", "code-review", "autonomous", "commit-gate"]
+}

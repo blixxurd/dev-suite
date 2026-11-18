@@ -1,0 +1,24 @@
+#!/bin/sh
+# Refuses a commit whose first line is not a Conventional Commit:  type(scope): subject
+# This file is the one home for that pattern. It can be run on any file whose first line is a subject.
+subject=$(sed -n '1p' "$1")
+types='feat|fix|docs|refactor|test|perf|build|ci|chore|style|revert'
+# A revert or a reapply passes when the subject it quotes does, and git's own merge subjects pass.
+checked=$subject
+case $checked in
+  'Revert "'*'"') checked=${checked#'Revert "'}; checked=${checked%'"'} ;;
+  'Reapply "'*'"') checked=${checked#'Reapply "'}; checked=${checked%'"'} ;;
+esac
+case $checked in
+  "Merge branch '"* | "Merge branches '"* | "Merge remote-tracking branch '"* | "Merge remote-tracking branches '"* | \
+  "Merge tag '"* | "Merge tags '"* | "Merge commit '"* | "Merge commits '"*) exit 0 ;;
+esac
+if printf '%s\n' "$checked" | grep -Eq "^($types)(\([^() ]+\))?!?: [^ ]"; then
+  exit 0
+fi
+cat >&2 <<MSG
+commit-msg: the first line must read  type(scope): subject  (the scope is optional)
+  types: $(printf '%s' "$types" | tr '|' ' ')
+  got:   $subject
+MSG
+exit 1

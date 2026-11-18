@@ -1,0 +1,12 @@
+{
+  "name": "dev-suite",
+  "description": "The dev plugin: plans, builds and ships new software projects the way a good developer builds them.",
+  "owner": { "name": "blixxurd" },
+  "plugins": [
+    {
+      "name": "dev",
+      "source": "./plugin",
+      "description": "A gameplan and one approval, then a walking skeleton, proven commits, an independent review and a written report."
+    }
+  ]
+}

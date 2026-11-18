@@ -1,0 +1,9 @@
+.DS_Store
+
+# The maintainer's planning files and trial results: kept on their machine, out of the public repo.
+/GAMEPLAN.md
+/REPORT.md
+/docs/
+/trials/results/
+/trials/outcome/results/
+/trials/outcome/snapshot-*.json
